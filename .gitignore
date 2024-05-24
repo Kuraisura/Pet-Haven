@@ -1,0 +1,38 @@
+# Dependencies and build output
+node_modules/
+bin/
+obj/
+build/
+dist/
+.gradle/
+.idea/
+.vs/
+packages/
+
+# Sensitive local data
+.claude/settings.local.json
+.env
+.env.*
+!.env.example
+!.env.sample
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+local.properties
+appsettings.*.json
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Security: ignore sensitive/generated files
+*.user
