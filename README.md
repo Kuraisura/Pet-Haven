@@ -58,49 +58,79 @@ A school desktop project demonstrating a pet-shop POS workflow. It requires a Wi
 
 Open the project under Pet Haven/ in Visual Studio on Windows with the .NET desktop workload and .NET Framework 4.7.2 targeting pack. Restore NuGet packages and configure SQL Server LocalDB for your development machine. Verify the schema with sample data before trying billing and receipt workflows.
 
-## Screenshots
+## Screenshot and module walkthrough
 
-<table>
-<tr>
-<td align="center"><img src="screenshots/1.png" alt="Application launch" width="440"><br>Application launch</td>
-<td align="center"><img src="screenshots/2.png" alt="Employee authentication" width="440"><br>Employee authentication</td>
-</tr>
-</table>
+Expand a screen below to see the capture and an explanation of the module, its visible controls, and its role in the application.
+
+<details open>
+<summary><strong>01 · Startup loading screen</strong></summary>
+
+Pet Haven branding and a progress bar introduce the Windows application. This screen precedes account entry and the shop-management workspace.
+
+<p><img src="screenshots/1.png" alt="Startup loading screen" width="960"></p>
+
+</details>
 
 <details>
-<summary>View all 8 screenshots</summary>
+<summary><strong>02 · Staff login</strong></summary>
 
-### 1. Application launch
+Username and password fields open the staff session. The split layout keeps shop branding beside the login form; the screenshot documents the interface rather than the strength of its authentication.
 
-![Application launch](screenshots/1.png)
+<p><img src="screenshots/2.png" alt="Staff login" width="960"></p>
 
-### 2. Employee authentication
+</details>
 
-![Employee authentication](screenshots/2.png)
+<details>
+<summary><strong>03 · Main workspace and daily sales</strong></summary>
 
-### 3. Manager dashboard
+Navigation provides access to dashboard, customer, employee, product, and billing modules. A daily-report area displays the current sales total and a reset action, giving staff a persistent operational summary.
 
-![Manager dashboard](screenshots/3.png)
+<p><img src="screenshots/3.png" alt="Main workspace and daily sales" width="960"></p>
 
-### 4. Inventory snapshot
+</details>
 
-![Inventory snapshot](screenshots/4.png)
+<details>
+<summary><strong>04 · Inventory category summary</strong></summary>
 
-### 5. Customer onboarding
+Dog, cat, fish, and bird cards display category counts with a refresh control. This dashboard gives staff a quick view of the animal-category records represented in the inventory.
 
-![Customer onboarding](screenshots/5.png)
+<p><img src="screenshots/4.png" alt="Inventory category summary" width="960"></p>
 
-### 6. Product catalog management
+</details>
 
-![Product catalog management](screenshots/6.png)
+<details>
+<summary><strong>05 · Customer registration and editing</strong></summary>
 
-### 7. Point-of-Sale checkout
+A customer list sits behind a modal collecting name, address, and phone number. Save, Update, and Cancel support adding or revising customer records used by the sales workflow.
 
-![Point-of-Sale checkout](screenshots/7.png)
+<p><img src="screenshots/5.png" alt="Customer registration and editing" width="960"></p>
 
-### 8. Post-sale confirmation
+</details>
 
-![Post-sale confirmation](screenshots/8.png)
+<details>
+<summary><strong>06 · Product registration and stock fields</strong></summary>
+
+The product modal captures name, type, animal category, quantity, and price. Its actions maintain the inventory records that cashiers select during billing.
+
+<p><img src="screenshots/6.png" alt="Product registration and stock fields" width="960"></p>
+
+</details>
+
+<details>
+<summary><strong>07 · Bill composition and checkout</strong></summary>
+
+Selected products appear with quantity, unit price, line totals, and transaction number. Add Product, quantity controls, removal actions, and Check Out let the cashier assemble and review a sale.
+
+<p><img src="screenshots/7.png" alt="Bill composition and checkout" width="960"></p>
+
+</details>
+
+<details>
+<summary><strong>08 · Daily total after a sale</strong></summary>
+
+The billing list is empty while the daily-report total has increased compared with the previous capture. It illustrates the post-sale workspace and updated summary; a receipt document itself is not shown.
+
+<p><img src="screenshots/8.png" alt="Daily total after a sale" width="960"></p>
 
 </details>
 
