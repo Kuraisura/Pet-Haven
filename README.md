@@ -1,121 +1,109 @@
-# 🐾 Pet Haven
+# Pet Haven
 
-**Pet Store Management System** · `Desktop`
+A Windows pet-shop POS project for managing products, customers, billing, and printable receipts.
 
-Complete pet store management system with customer registration, product inventory, billing/POS, and daily sales reporting.
+**Windows** · **School Project** · 2024
 
-## Why This Project
+[Portfolio](https://kuraisler.xyz)
 
-A neighborhood pet store runs on a whiteboard, a cash drawer, and whoever happens to be at the counter. Stock counts drift out of sync with reality, "who bought the last aquarium" lives only in a staff member's head, and end-of-day totals are reconstructed from a pile of receipts. Pet Haven was built as a school project to digitize that whole loop — inventory, customers, employee accounts, checkout, and daily sales — in one desktop application the whole staff can share.
+## Purpose
 
-Mark served as **technical lead of a team of six**, designing the SQL Server schema, the database access layer, and the point-of-sale flow, and coordinating the team's forms into a single shell with sidebar navigation. The centerpiece was the billing pipeline: product lookup, live totals, customer attribution, cash/change handling, and a printed QR-coded PDF receipt — the one screen where every other module converges.
+Pet Haven models the daily counter workflow of a pet shop: maintain product and customer records, prepare a sale, calculate payment and change, and retain transaction information. It brings these related activities into one desktop interface.
 
-## How It Works
+## Intended users
 
-The store opens and the splash screen masks the SQL Server connection while the brand's cartoon pet logo and progress bar reassure the cashier the app is coming up. The login dialog appears — "Welcome to Pet Haven!" — and the cashier, Liza, signs in with her employee credentials. The system checks her name and password against the employee table, greets her by name, and opens the main shell with her username and role displayed in the corner.
+Pet-shop cashiers and administrators managing product inventory, customer information, and cash sales in a small-shop scenario.
 
-The dashboard loads first: four big category cards — Dogs, Cats, Birds, Fish — each showing a live stock count pulled from the product table. Liza can see at a glance that fish stock is running low before a customer asks for the last betta.
+## Main capabilities
 
-A regular, Mrs. Santos, walks in with a shopping list. Liza clicks **Cash** and the billing form opens with a fresh transaction number. She clicks Add, searches the product catalog, and rings up a bag of dog food, a cage, and some treats — quantities can be bumped up or down right in the grid, and the total recalculates live. When the cart is ready, she clicks Checkout, picks Mrs. Santos from the customer picker, and the customer's ID is stamped onto the transaction. She enters the cash tendered, the change is computed, and checkout completes: the PDF receipt is generated with an embedded QR code encoding the transaction number, the Daily Report updates with the new cumulative total, and the Transaction button lights up for reviewing the sale later.
+- Maintain employee, product, and customer records.
+- Browse inventory by product or animal category.
+- Build a bill and calculate cash payment and change.
+- Review transactions and generate PDF receipts with QR codes.
 
-If Mrs. Santos were new, Liza would have registered her first — name, address, phone — from the customer module, and she would then appear in the checkout picker immediately. Before the store opened, the manager had already used the same shell to add incoming puppies to inventory and register a new part-time employee; every one of those records flows into the same SQL Server database the POS reads from, so the numbers Liza sees at checkout are the numbers the manager sees on the dashboard.
+## How it was built
 
-## Modules
+### Desktop workflow
 
-### Splash & Employee Login
-The launch screen hides database connection setup behind branded progress feedback; the login dialog authenticates employees against the employee table by name and password, returning a welcome message with the employee's name and role before opening the main shell.
+C# Windows Forms on .NET Framework 4.7.2 implements separate screens for inventory, customer management, billing, and transactions.
 
-**Scenario:** Liza arrives for her shift, types her credentials, and gets "Welcome Liza!" — her cashier role travels with her into the main form and onto every receipt she issues.
+### Database access
 
-### Main Application Shell
-A fixed-size sidebar shell hosting Dashboard, Customers, Employees, Products, Cash (billing), and — after a completed sale — Transaction history, with the logged-in username and role always visible and a Daily Sales total on the home view.
+ADO.NET SqlConnection and SqlCommand operations connect forms to SQL Server LocalDB. The database stores the core shop records.
 
-**Scenario:** From one window the manager checks stock on the dashboard, jumps to Employees to onboard a hire, then hands the same machine to Liza who goes straight to Cash — no restarts, no separate apps.
+### Receipts and interface
 
-### Dashboard & Live Inventory Overview
-Four animal-category cards (Dogs, Cats, Birds, Fish) show live quantities aggregated from the product table, refreshing whenever the form is activated or stock changes — a purpose-built "is anything about to run out?" view.
+iTextSharp and QRCoder create branded PDF receipts and transaction codes. Guna.UI2 provides styled Windows controls.
 
-**Scenario:** The manager glances at the dashboard before opening: Fish reads 2. He adds a delivery of ten fish in Products, and the card ticks up to 12 the next time the dashboard is shown.
+## Technology stack
 
-### Customer Management
-Registers and maintains the customer roster — name, address, phone — that feeds both checkout attribution and sales records. New customers can be created on the spot and immediately become selectable in the billing flow.
+| Responsibility | Technologies |
+| --- | --- |
+| Windows application | C#, .NET Framework 4.7.2, Windows Forms |
+| Database | SQL Server LocalDB, ADO.NET |
+| Interface | Guna.UI2 |
+| Receipts | iTextSharp, QRCoder |
 
-**Scenario:** A first-time buyer has no record; Liza opens Customers, captures her details in a modal, and by the time she returns to checkout the new customer is available in the picker.
+## Project scope and current state
 
-### Employee Management
-Full CRUD for staff accounts, including the role assigned at login — the same table the authentication query reads, so adding an employee in this module automatically grants system access.
+A school desktop project demonstrating a pet-shop POS workflow. It requires a Windows environment and configured LocalDB database; its login and transaction flows should be reviewed before real business use.
 
-**Scenario:** The store hires a weekend cashier; the manager registers her name, password, and role, and she can log in on her first day with no extra configuration.
+## Source guide
 
-### Product Inventory
-Catalog management across product code, name, type, animal category (Dog/Cat/Bird/Fish), quantity, and price — with delete-aware quantity tracking so the dashboard counts stay honest as stock moves.
+- [`Pet Haven/`](Pet%20Haven/)
+- [`Pet Haven/DbConnect.cs`](Pet%20Haven/DbConnect.cs)
+- [`Pet Haven/BillingForm.cs`](Pet%20Haven/BillingForm.cs)
 
-**Scenario:** A shipment of dog cages arrives; the manager adds them under the Dog category with quantity and price, and the product grid and category totals update for everyone.
+## Development setup
 
-### Point-of-Sale Billing
-The revenue engine: transaction numbers are generated per sale, products are added via a catalog picker, quantities are adjusted in-grid with live totals, a customer is chosen before checkout is enabled, cash/change are handled, and completing the sale writes the records and fires the receipt.
-
-**Scenario:** Liza rings up ₱128,090.52 worth of goods, selects Mrs. Santos, takes her cash, and the form confirms the sale — the cart clears, the daily total climbs, and the transaction is now a permanent record joined to both product and customer.
-
-### Receipts & Transaction History
-Every completed sale can produce a PDF receipt (iTextSharp) with a QRCoder-generated QR code carrying the transaction number; the Transaction screen later re-opens the full sales log with product, customer, cashier, cash, and change columns.
-
-**Scenario:** Two days later a customer asks for proof of purchase; the manager opens Transactions, finds the sale by number, and regenerates the QR-stamped receipt for her records.
+Open the project under Pet Haven/ in Visual Studio on Windows with the .NET desktop workload and .NET Framework 4.7.2 targeting pack. Restore NuGet packages and configure SQL Server LocalDB for your development machine. Verify the schema with sample data before trying billing and receipt workflows.
 
 ## Screenshots
 
-### Application launch — the loading screen masks database connection initialization while reinforcing the brand with the cartoon pet logo and progress feedback.
+<table>
+<tr>
+<td align="center"><img src="screenshots/1.png" alt="Application launch" width="440"><br>Application launch</td>
+<td align="center"><img src="screenshots/2.png" alt="Employee authentication" width="440"><br>Employee authentication</td>
+</tr>
+</table>
 
-![Application launch — the loading screen masks database connection initialization while reinforcing the brand with the cartoon pet logo and progress feedback.](screenshots/1.png)
+<details>
+<summary>View all 8 screenshots</summary>
 
-### Employee authentication — the login dialog restricts access to authorized staff. The "Welcome to Pet Haven!" tagline creates a friendly tone appropriate for a pet store environment.
+### 1. Application launch
 
-![Employee authentication — the login dialog restricts access to authorized staff. The "Welcome to Pet Haven!" tagline creates a friendly tone appropriate for a pet store environment.](screenshots/2.png)
+![Application launch](screenshots/1.png)
 
-### Manager dashboard — the home screen after login shows the sidebar (Customers, Employees, Products, Billing) and the Daily Report, giving managers an instant view of today's sales performance.
+### 2. Employee authentication
 
-![Manager dashboard — the home screen after login shows the sidebar (Customers, Employees, Products, Billing) and the Daily Report, giving managers an instant view of today's sales performance.](screenshots/3.png)
+![Employee authentication](screenshots/2.png)
 
-### Inventory snapshot — animal category cards (Dogs, Cats, Fish, Birds) show live stock counts. When counts drop, managers know it's time to reorder before a pet runs out.
+### 3. Manager dashboard
 
-![Inventory snapshot — animal category cards (Dogs, Cats, Fish, Birds) show live stock counts. When counts drop, managers know it's time to reorder before a pet runs out.](screenshots/4.png)
+![Manager dashboard](screenshots/3.png)
 
-### Customer onboarding — the registration modal captures name, address, and phone when a new customer makes their first purchase. This data feeds loyalty tracking and receipt printing.
+### 4. Inventory snapshot
 
-![Customer onboarding — the registration modal captures name, address, and phone when a new customer makes their first purchase. This data feeds loyalty tracking and receipt printing.](screenshots/5.png)
+![Inventory snapshot](screenshots/4.png)
 
-### Product catalog management — the registration modal adds new products with type, category, quantity, and price. Essential for tracking inventory levels and pricing across the store.
+### 5. Customer onboarding
 
-![Product catalog management — the registration modal adds new products with type, category, quantity, and price. Essential for tracking inventory levels and pricing across the store.](screenshots/6.png)
+![Customer onboarding](screenshots/5.png)
 
-### Point-of-Sale checkout — rings up items (dog food, cage, treats), calculates the total (₱128,090.52), and processes payment. This is the primary revenue-generating screen of the system.
+### 6. Product catalog management
 
-![Point-of-Sale checkout — rings up items (dog food, cage, treats), calculates the total (₱128,090.52), and processes payment. This is the primary revenue-generating screen of the system.](screenshots/7.png)
+![Product catalog management](screenshots/6.png)
 
-### Post-sale confirmation — after checkout, the transaction list clears and the Daily Report updates with the new total. Managers can track cumulative sales throughout the business day.
+### 7. Point-of-Sale checkout
 
-![Post-sale confirmation — after checkout, the transaction list clears and the Daily Report updates with the new total. Managers can track cumulative sales throughout the business day.](screenshots/8.png)
+![Point-of-Sale checkout](screenshots/7.png)
 
-## Features
+### 8. Post-sale confirmation
 
-- Admin dashboard with daily sales reports
-- Customer registration and management
-- Employee management
-- Product inventory with categories
-- Billing / Point-of-Sale with checkout
-- Pet category tracking (dogs, cats, fish, birds)
+![Post-sale confirmation](screenshots/8.png)
 
-## Tech Stack
-
-- C#
-- WinForms
-- .NET
-- SQL Server
-
-## About
-
-A Windows Forms desktop application for managing a pet store. Features a point-of-sale system, customer and employee databases, product inventory tracking, and daily sales reporting. Built with a clean dark sidebar navigation layout.
+</details>
 
 ---
 
-Built by [Mark Crysler Baddo](https://github.com/Kuraisura) · [Portfolio](https://kuraisler.xyz)
+Project by [Mark Crysler Baddo](https://github.com/Kuraisura) · [Portfolio](https://kuraisler.xyz)
